@@ -39,10 +39,14 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
         data: {
           headline: 'Diseño que respeta el planeta',
           subheadline: 'Creamos identidades visuales sostenibles para marcas con propósito. Tu imagen, nuestra pasión.',
-          ctaText: 'Comenzar ahora',
-          ctaUrl: '#contact',
-          imageUrl: 'https://placehold.co/800x600/16a34a/ffffff?text=Hero+Image',
-          backgroundType: 'gradient',
+          layout: 'full-bg',
+          badge: 'Agencia Certificada Verde',
+          actions: [
+            { type: 'url', url: '#contact', label: 'Comenzar ahora' },
+            { type: 'whatsapp', url: 'https://wa.me/34600000000', label: 'Hablar con un experto' }
+          ],
+          imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1200',
+          backgroundType: 'image',
         },
       },
       {
@@ -59,6 +63,18 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
             { icon: '🤝', title: 'Soporte Continuo', description: 'Te acompañamos mucho más allá del lanzamiento.' },
           ],
         },
+      },
+      {
+        id: 'block-promo-1',
+        type: 'promo-timer',
+        order: 2.2,
+        visible: true,
+        data: {
+          title: 'Oferta Especial Eco-Brand',
+          description: 'Obtén un 20% de descuento en tu manual de identidad si reservas en los próximos días.',
+          endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+          action: { type: 'whatsapp', url: 'https://wa.me/34600000000', label: 'Reclamar Oferta' }
+        }
       },
       {
         id: 'block-item-list-1',
@@ -110,6 +126,17 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
               ]
             }
           ]
+        }
+      },
+      {
+        id: 'block-video-1',
+        type: 'video-embed',
+        order: 2.8,
+        visible: true,
+        data: {
+          url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0',
+          platform: 'youtube',
+          caption: 'Nuestro manifiesto de marca sostenible.'
         }
       },
       {

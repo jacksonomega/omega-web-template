@@ -10,25 +10,32 @@ import { ItemListBlockData } from '../../core/tenant/tenant.model';
     <section class="item-list">
       <div class="item-list__container">
         
+        @if (!data.categories || data.categories.length === 0) {
+          <div class="item-list__empty-state" style="padding: 3rem; border: 2px dashed var(--color-text-muted); text-align: center; border-radius: var(--border-radius); opacity: 0.7;">
+            <h3>Bloque de Servicios / Productos (Módulo Vacío)</h3>
+            <p>Configura este bloque en tu editor añadiendo categorías e ítems JSON válidos.</p>
+          </div>
+        }
+
         <header class="item-list__header">
-          <h2 class="item-list__title">{{ data.header.title }}</h2>
-          @if (data.header.subtitle) {
-            <p class="item-list__subtitle">{{ data.header.subtitle }}</p>
+          <h2 class="item-list__title">{{ data.header?.title }}</h2>
+          @if (data.header?.subtitle) {
+            <p class="item-list__subtitle">{{ data.header?.subtitle }}</p>
           }
         </header>
 
         <div class="item-list__categories">
-          @for (category of data.categories; track category.id) {
+          @for (category of data.categories || []; track category.id) {
             <div class="item-list__category">
               <h3 class="item-list__category-title">{{ category.name }}</h3>
               
               <div 
                 class="item-list__grid"
                 [attr.data-style]="data.displayStyle"
-                [style.--cols-desktop]="data.columns.desktop"
-                [style.--cols-mobile]="data.columns.mobile">
+                [style.--cols-desktop]="data.columns?.desktop || 1"
+                [style.--cols-mobile]="data.columns?.mobile || 1">
                 
-                @for (item of category.items; track item.id) {
+                @for (item of category.items || []; track item.id) {
                   <article class="list-item" [attr.data-style]="data.displayStyle">
                     
                     @if (item.imageUrl && data.displayStyle === 'card-grid') {

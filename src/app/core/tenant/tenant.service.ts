@@ -9,6 +9,43 @@ export class TenantService {
   private readonly http = inject(HttpClient);
   private readonly document = inject(DOCUMENT);
 
+  constructor() {
+    this.listenToEditorMessages();
+  }
+
+  // ─── PostMessage Interceptor para el Editor Web ──────────────────────────────
+  private listenToEditorMessages(): void {
+    if (typeof window === 'undefined') return;
+
+    window.addEventListener('message', (event) => {
+      // TODO: Añadir comprobaciones de seguridad (event.origin) cuando sepamos la URL del Editor
+      
+      try {
+        const payload = event.data;
+        
+        // Asume que el editor podría enviar { type: 'LIVE_UPDATE', data: { ...el JSON... } }
+        // o directamente el JSON
+        if (payload && typeof payload === 'object') {
+          console.log('----------------------------------------------------');
+          console.log('🧩 [SaaS Engine] Mensaje (JSON) interceptado desde el Iframe Padre:');
+          console.log(payload);
+          console.log('----------------------------------------------------');
+          
+          if (payload.type === 'UPDATE_TENANT_CONFIG' && payload.payload) {
+            console.log('⚡ [SaaS Engine] Aplicando actualización Live Preview...');
+            this.config.set(payload.payload);
+            this.applyTheme(payload.payload.theme);
+            if (payload.payload.theme.faviconUrl) {
+              this.applyFavicon(payload.payload.theme.faviconUrl);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('[SaaS Engine] Error procesando mensaje de postMessage', err);
+      }
+    });
+  }
+
   // ─── State ───────────────────────────────────────────────────────────────────
 
   readonly config = signal<TenantConfig | null>(null);

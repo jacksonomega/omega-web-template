@@ -1,9 +1,9 @@
 import {
   Component,
   inject,
-  OnInit,
   signal,
   Type,
+  effect,
 } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { TenantService } from '../../core/tenant/tenant.service';
@@ -98,16 +98,21 @@ interface ResolvedBlock {
     }
   `],
 })
-export class PageRendererComponent implements OnInit {
+export class PageRendererComponent {
   protected readonly tenantService = inject(TenantService);
 
   /** Resolved blocks: each PageBlock paired with its lazy-loaded component Type */
   readonly resolvedBlocks = signal<ResolvedBlock[]>([]);
 
-  async ngOnInit(): Promise<void> {
-    const blocks = this.tenantService.blocks();
-    const resolved = await this.resolveBlocks(blocks);
-    this.resolvedBlocks.set(resolved);
+  constructor() {
+    // El 'effect' vigila a tenantService.blocks()
+    // Cada vez que el editor mande un bloque nuevo, se volverá a ejecutar,
+    // cargará los componentes perezosos si hacen falta, y actualizará la vista.
+    effect(async () => {
+      const blocks = this.tenantService.blocks();
+      const resolved = await this.resolveBlocks(blocks);
+      this.resolvedBlocks.set(resolved);
+    }, { allowSignalWrites: true });
   }
 
   /**
@@ -125,12 +130,20 @@ export class PageRendererComponent implements OnInit {
   }
 
   private async resolveBlock(block: PageBlock): Promise<ResolvedBlock> {
-    const loader = BLOCK_REGISTRY[block.type as BlockType];
+    const normalizedType = block.type
+      .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+      .toLowerCase() as BlockType;
+
+    const loader = BLOCK_REGISTRY[normalizedType];
     if (!loader) {
-      console.warn(`[PageRenderer] Unknown block type: "${block.type}". Skipping.`);
+      console.warn(`[PageRenderer] Unknown block type: "${block.type}" (normalized: "${normalizedType}"). Skipping.`);
       return Promise.reject(new Error(`Unknown block type: ${block.type}`));
     }
+    
+    // Devolvemos el bloque pero con su tipo ya normalizado
+    const blockNormalized = { ...block, type: normalizedType };
     const component = await loader();
-    return { block, component };
+    
+    return { block: blockNormalized, component };
   }
 }

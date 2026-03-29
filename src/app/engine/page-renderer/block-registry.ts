@@ -35,4 +35,12 @@ export const BLOCK_REGISTRY: Record<BlockType, () => Promise<Type<unknown>>> = {
     import('../../blocks/item-list/item-list-block.component').then(
       (m) => m.ItemListBlockComponent
     ),
+  'promo-timer': () =>
+    import('../../blocks/promo-timer/promo-timer-block.component').then(
+      (m) => m.PromoTimerBlockComponent
+    ),
+  'video-embed': () =>
+    import('../../blocks/video-embed/video-embed-block.component').then(
+      (m) => m.VideoEmbedBlockComponent
+    ),
 };

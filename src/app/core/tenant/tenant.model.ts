@@ -7,17 +7,36 @@ export type BlockType =
   | 'contact'
   | 'testimonials'
   | 'footer'
-  | 'item-list';
+  | 'item-list'
+  | 'promo-timer'
+  | 'video-embed';
 
 // ─── Block Data Interfaces ────────────────────────────────────────────────────
 
 export interface HeroBlockData {
   headline: string;
   subheadline: string;
-  ctaText: string;
-  ctaUrl: string;
-  imageUrl: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  actions?: ActionProp[];
+  badge?: string;
+  layout?: 'split' | 'centered' | 'full-bg';
+  imageUrl?: string;
   backgroundType: 'image' | 'gradient' | 'video';
+  backgroundVideoUrl?: string;
+}
+
+export interface PromoTimerBlockData {
+  title: string;
+  description?: string;
+  endDate: string; // ISO Date String
+  action?: ActionProp;
+}
+
+export interface VideoEmbedBlockData {
+  url: string;
+  platform: 'youtube' | 'tiktok' | 'instagram' | 'generic';
+  caption?: string;
 }
 
 export interface Feature {
@@ -119,7 +138,9 @@ export type BlockData =
   | ContactBlockData
   | TestimonialsBlockData
   | FooterBlockData
-  | ItemListBlockData;
+  | ItemListBlockData
+  | PromoTimerBlockData
+  | VideoEmbedBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
 
