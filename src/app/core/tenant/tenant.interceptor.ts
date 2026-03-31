@@ -178,6 +178,22 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
         },
       },
       {
+        id: 'block-gallery-1',
+        type: 'gallery',
+        order: 3.5,
+        visible: true,
+        data: {
+          sectionTitle: 'Nuestros Trabajos Recientes',
+          layout: 'carousel',
+          images: [
+            { url: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=600', caption: 'Diseño de Marca Holística' },
+            { url: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=600', caption: 'Packaging Sostenible' },
+            { url: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=600', caption: 'Interfaz de Venta UI/UX' },
+            { url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=600', caption: 'Identidad Visual Corporativa' }
+          ]
+        }
+      },
+      {
         id: 'block-testimonials-1',
         type: 'testimonials',
         order: 4,
@@ -208,6 +224,17 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
             },
           ],
         },
+      },
+      {
+        id: 'block-location-1',
+        type: 'location',
+        order: 4.5,
+        visible: true,
+        data: {
+          sectionTitle: 'Dónde Estamos',
+          address: 'Calle del Diseño 42, 28004 Madrid, España',
+          description: 'Nuestro estudio principal está en el corazón de Madrid. Estaremos encantados de recibirte con un café ecológico.'
+        }
       },
       {
         id: 'block-contact-1',

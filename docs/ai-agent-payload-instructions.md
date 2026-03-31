@@ -17,7 +17,8 @@ Este documento es el cerebro que debes entregar a cualquier Agente de IA para qu
 > -   Usa el 'Libro de Recetas' adjunto para inspirarte en cómo usar los componentes.
 > -   **ESTRICTO:** El campo `type` de los bloques debe ser **kebab-case** (ej: `item-list`, no `ItemList`).
 > -   **ESTRICTO:** El JSON de salida debe estar envuelto en `{ "type": "UPDATE_TENANT_CONFIG", "payload": { ... } }`.
-> -   **COPYWRITING:** Escribe textos reales, vendedores y humanos. Nada de 'Lorem Ipsum'."
+> -   **COPYWRITING:** Escribe textos reales, vendedores y humanos. Nada de 'Lorem Ipsum'.
+> -   **CONTACTO:** Siempre incluye un bloque `location` si el negocio es físico (restaurante, barbería, clínica)."
 
 ---
 
@@ -74,6 +75,37 @@ El motor es como un LEGO. Un mismo bloque puede ser muchas cosas dependiendo de 
 }
 ```
 
+### 📍 Receta E: Mostrar Instalaciones o Trabajos (Galería)
+*   **Secreto:** Usa `type: "gallery"`. Si hay pocas fotos usa `layout: "grid"`, si hay muchas usa `layout: "carousel"`.
+*   **JSON de Bloque:**
+```json
+{
+  "type": "gallery",
+  "data": {
+    "sectionTitle": "Nuestras Instalaciones",
+    "layout": "carousel",
+    "images": [
+      { "url": "https://...", "caption": "Sala principal" },
+      { "url": "https://...", "caption": "Área de relax" }
+    ]
+  }
+}
+```
+
+### 📍 Receta F: Generar Confianza (Testimonios + Mapa)
+*   **Secreto:** Termina siempre la página con un bloque `testimonials` seguido de un bloque `location`.
+*   **JSON de Ubicación:**
+```json
+{
+  "type": "location",
+  "data": {
+    "sectionTitle": "Visítanos",
+    "address": "Calle Mayor 1, Madrid",
+    "description": "Estamos en pleno centro, frente a la Puerta del Sol."
+  }
+}
+```
+
 ---
 
 ## 🛠️ PARTE 3: DICCIONARIO TÉCNICO COMPLETO
@@ -117,6 +149,13 @@ El motor es como un LEGO. Un mismo bloque puede ser muchas cosas dependiendo de 
     - `"menu"`: Estilo carta (Restaurantes).
     - `"card-grid"`: Cuadrícula visual (Catálogos, Galería).
 - `categories`: Array de `{ name, items: [] }`.
+
+#### `gallery` (Galería de Fotos)
+- `sectionTitle`, `layout` (`"grid"` | `"carousel"`).
+- `images`: Array de `{ url, caption }`.
+
+#### `location` (Ubicación Geográfica)
+- `sectionTitle`, `address` (texto), `description`.
 
 #### `testimonials` (Prueba Social)
 - Imprescindible para generar confianza. Mínimo 3 testimonios.

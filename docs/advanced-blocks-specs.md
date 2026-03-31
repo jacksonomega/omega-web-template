@@ -70,3 +70,53 @@ Diseñado para embeber Iframes de manera segura y completamente responsiva, reac
 *   **Relación de Aspecto (Aspect Ratio):**
     *   Si el Editor manda `platform="youtube"` o `"generic"`, el bloque de Angular reservará un rectángulo horizontal panorámico (`16:9`).
     *   Si el Editor manda `platform="tiktok"` o `"instagram"`, el bloque limitará el ancho máximo a `400px` y aplicará un formato vertical estilo móvil (`9:16`).
+
+---
+
+## 4. Galería de Imágenes (`gallery`)
+Un bloque versátil para mostrar catálogos, trabajos previos o las instalaciones del negocio.
+
+### Interfaz TypeScript
+```typescript
+{
+  "type": "gallery",
+  "data": {
+    "sectionTitle"?: string;
+    "layout": "grid" | "carousel"; // "grid" (fijo) o "carousel" (deslizable)
+    "images": [
+      {
+        "url": string,
+        "caption"?: string,
+        "altText"?: string
+      }
+    ]
+  }
+}
+```
+
+### Comportamiento del Editor Web
+*   **Layouts**: 
+    *   `grid`: Crea una cuadrícula responsiva que se adapta al ancho de pantalla.
+    *   `carousel`: Crea una fila horizontal con *scroll-snap*, ideal para navegación táctil en móviles.
+*   **Optimización**: Se recomienda al editor proporcionar URLs de imágenes optimizadas o miniaturas para evitar tiempos de carga lentos si se incluyen muchas fotos.
+
+---
+
+## 5. Mapa de Ubicación (`location`)
+Permite a los clientes encontrar el negocio físico mediante un mapa interactivo de Google Maps.
+
+### Interfaz TypeScript
+```typescript
+{
+  "type": "location",
+  "data": {
+    "sectionTitle"?: string,
+    "address": string, // Dirección textual completa (Ej: "Calle Falsa 123, Madrid")
+    "description"?: string // Texto explicativo o indicaciones
+  }
+}
+```
+
+### Comportamiento del Editor Web
+*   **Dirección**: El motor utiliza la dirección textual para generar automáticamente el Iframe de Google Maps. No es necesario que el usuario busque coordenadas o códigos de inserción complejos.
+*   **Botón Externo**: El bloque incluye automáticamente un botón de "Abrir en Google Maps" que redirige al usuario a la aplicación o web de mapas nativa en una nueva pestaña.

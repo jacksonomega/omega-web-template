@@ -9,7 +9,9 @@ export type BlockType =
   | 'footer'
   | 'item-list'
   | 'promo-timer'
-  | 'video-embed';
+  | 'video-embed'
+  | 'gallery'
+  | 'location';
 
 // ─── Block Data Interfaces ────────────────────────────────────────────────────
 
@@ -129,6 +131,24 @@ export interface ItemListBlockData {
   categories: ListCategory[];
 }
 
+export interface GalleryImage {
+  url: string;
+  caption?: string;
+  altText?: string;
+}
+
+export interface GalleryBlockData {
+  sectionTitle?: string;
+  layout: 'grid' | 'carousel';
+  images: GalleryImage[];
+}
+
+export interface LocationBlockData {
+  sectionTitle?: string;
+  address: string;
+  description?: string;
+}
+
 // ─── Discriminated Union ──────────────────────────────────────────────────────
 
 export type BlockData =
@@ -140,7 +160,9 @@ export type BlockData =
   | FooterBlockData
   | ItemListBlockData
   | PromoTimerBlockData
-  | VideoEmbedBlockData;
+  | VideoEmbedBlockData
+  | GalleryBlockData
+  | LocationBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
 

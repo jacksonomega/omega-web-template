@@ -43,4 +43,12 @@ export const BLOCK_REGISTRY: Record<BlockType, () => Promise<Type<unknown>>> = {
     import('../../blocks/video-embed/video-embed-block.component').then(
       (m) => m.VideoEmbedBlockComponent
     ),
+  'gallery': () =>
+    import('../../blocks/gallery/gallery-block.component').then(
+      (m) => m.GalleryBlockComponent
+    ),
+  'location': () =>
+    import('../../blocks/location/location-block.component').then(
+      (m) => m.LocationBlockComponent
+    ),
 };
