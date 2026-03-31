@@ -226,6 +226,78 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
         },
       },
       {
+        id: 'block-text-1',
+        type: 'text',
+        order: 4.1,
+        visible: true,
+        data: {
+          sectionTitle: 'Nuestra Filosofía',
+          subtitle: 'Diseñando un futuro mejor',
+          alignment: 'center',
+          paragraphs: [
+            'En GreenLeaf Studio, creemos que el diseño no solo debe ser estéticamente agradable, sino que debe cumplir un propósito mayor. Trabajamos cada día para asegurarnos de que nuestras creaciones visuales dejen una huella positiva en el mundo, minimizando el impacto ambiental en cada etapa de nuestro proceso de desarrollo digital.',
+            'Entendemos que cada negocio es único. Por eso, nos tomamos el tiempo para escuchar, analizar y proponer soluciones a medida que no solo resalten los valores de tu empresa, sino que también conecten emocionalmente con una audiencia cada vez más consciente y exigente.'
+          ]
+        }
+      },
+      {
+        id: 'block-timeline-1',
+        type: 'timeline',
+        order: 4.15,
+        visible: true,
+        data: {
+          sectionTitle: 'Nuestro Proceso',
+          subtitle: 'Cómo transformamos tu marca paso a paso',
+          events: [
+            {
+              date: 'Fase 1',
+              title: 'Descubrimiento',
+              description: 'Investigamos a fondo tu mercado, tu competencia y tu audiencia para encontrar tu verdadero diferencial verde.'
+            },
+            {
+              date: 'Fase 2',
+              title: 'Estrategia',
+              description: 'Definimos el camino, los pilares de comunicación y el tono de voz de tu nueva marca sostenible.'
+            },
+            {
+              date: 'Fase 3',
+              title: 'Diseño Creador',
+              description: 'Damos vida a la identidad visual, logotipos, paleta de colores y todos los activos digitales.'
+            },
+            {
+              date: 'Fase 4',
+              title: 'Lanzamiento',
+              description: 'Preparamos todo con nuestra infraestructura de servidores ecológicos para que el mundo conozca tu nueva cara.'
+            }
+          ]
+        }
+      },
+      {
+        id: 'block-faq-1',
+        type: 'faq',
+        order: 4.2,
+        visible: true,
+        data: {
+          sectionTitle: 'Preguntas Frecuentes',
+          subtitle: 'Todo lo que necesitas saber antes de empezar',
+          layout: 'accordion',
+          faqs: [
+            {
+              question: '¿Cuánto tiempo tarda un proyecto de branding?',
+              answer: 'Dependiendo de la complejidad, un proyecto típico de branding puede tomar entre 2 y 6 semanas. Nos gusta tomarnos el tiempo necesario para investigar, explorar y refinar hasta conseguir un resultado perfecto y con propósito.'
+            },
+            {
+              question: '¿Ofrecen soporte continuo después del lanzamiento?',
+              answer: 'Sí, ofrecemos paquetes de soporte y mantenimiento (GreenCare) para asegurar que tu diseño se aplique correctamente en todos los puntos de contacto y para realizar los ajustes necesarios a medida que tu negocio crece.'
+            },
+            {
+              question: '¿Qué formas de pago aceptan?',
+              answer: 'Aceptamos transferencias bancarias, tarjetas de crédito/débito y pagos fraccionados en 2 o 3 cuotas, dependiendo del volumen del proyecto, para facilitar la inversión de tu negocio.'
+            }
+          ]
+        }
+      },
+      {
         id: 'block-location-1',
         type: 'location',
         order: 4.5,

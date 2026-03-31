@@ -11,7 +11,10 @@ export type BlockType =
   | 'promo-timer'
   | 'video-embed'
   | 'gallery'
-  | 'location';
+  | 'location'
+  | 'faq'
+  | 'text'
+  | 'timeline';
 
 // ─── Block Data Interfaces ────────────────────────────────────────────────────
 
@@ -149,6 +152,37 @@ export interface LocationBlockData {
   description?: string;
 }
 
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface FaqBlockData {
+  sectionTitle: string;
+  subtitle?: string;
+  faqs: FaqItem[];
+  layout?: 'accordion' | 'grid';
+}
+
+export interface TextBlockData {
+  sectionTitle?: string;
+  subtitle?: string;
+  paragraphs: string[];
+  alignment?: 'left' | 'center' | 'right';
+}
+
+export interface TimelineEvent {
+  date: string;
+  title: string;
+  description: string;
+}
+
+export interface TimelineBlockData {
+  sectionTitle?: string;
+  subtitle?: string;
+  events: TimelineEvent[];
+}
+
 // ─── Discriminated Union ──────────────────────────────────────────────────────
 
 export type BlockData =
@@ -162,7 +196,10 @@ export type BlockData =
   | PromoTimerBlockData
   | VideoEmbedBlockData
   | GalleryBlockData
-  | LocationBlockData;
+  | LocationBlockData
+  | FaqBlockData
+  | TextBlockData
+  | TimelineBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
 

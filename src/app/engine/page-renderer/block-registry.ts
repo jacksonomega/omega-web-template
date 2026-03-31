@@ -51,4 +51,16 @@ export const BLOCK_REGISTRY: Record<BlockType, () => Promise<Type<unknown>>> = {
     import('../../blocks/location/location-block.component').then(
       (m) => m.LocationBlockComponent
     ),
+  'faq': () =>
+    import('../../blocks/faq/faq-block.component').then(
+      (m) => m.FaqBlockComponent
+    ),
+  'text': () =>
+    import('../../blocks/text/text-block.component').then(
+      (m) => m.TextBlockComponent
+    ),
+  'timeline': () =>
+    import('../../blocks/timeline/timeline-block.component').then(
+      (m) => m.TimelineBlockComponent
+    ),
 };
