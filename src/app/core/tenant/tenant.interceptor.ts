@@ -24,13 +24,18 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
       logoUrl: 'https://placehold.co/160x48/16a34a/ffffff?text=GreenLeaf',
       faviconUrl: '',
     },
-    seo: {
+    globalSeo: {
       title: 'GreenLeaf Studio — Diseño Sostenible',
       description: 'Agencia de diseño sostenible para marcas con propósito.',
       ogImage: 'https://placehold.co/1200x630/16a34a/ffffff?text=GreenLeaf+Studio',
       keywords: ['diseño', 'sostenible', 'branding', 'green'],
     },
-    blocks: [
+    pages: [
+      {
+        id: 'page-home',
+        path: '/',
+        name: 'Inicio',
+        blocks: [
       {
         id: 'block-hero-1',
         type: 'hero',
@@ -271,9 +276,16 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
             }
           ]
         }
+      }
+        ]
       },
       {
-        id: 'block-faq-1',
+        id: 'page-faqs',
+        path: '/preguntas-frecuentes',
+        name: 'FAQ',
+        blocks: [
+      {
+        id: 'page-faq-1',
         type: 'faq',
         order: 4.2,
         visible: true,
@@ -319,28 +331,11 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
           phone: '+34 612 345 678',
           address: 'Calle del Diseño 42, Madrid, España',
           showMap: false,
-        },
-      },
-      {
-        id: 'block-footer-1',
-        type: 'footer',
-        order: 6,
-        visible: true,
-        data: {
-          copyrightText: '© 2024 GreenLeaf Studio. Todos los derechos reservados.',
-          links: [
-            { label: 'Privacidad', url: '/privacidad' },
-            { label: 'Términos', url: '/terminos' },
-            { label: 'Cookies', url: '/cookies' },
-          ],
-          socialLinks: [
-            { platform: 'Instagram', url: 'https://instagram.com', icon: '📸' },
-            { platform: 'LinkedIn', url: 'https://linkedin.com', icon: '💼' },
-            { platform: 'Twitter', url: 'https://twitter.com', icon: '🐦' },
-          ],
-        },
-      },
-    ],
+        }
+      }
+        ]
+      }
+    ]
   },
 
   // ─── Second demo tenant (purple/gold theme) ──────────────────────────────────
@@ -362,13 +357,18 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
       logoUrl: 'https://placehold.co/160x48/7c3aed/ffffff?text=Nova',
       faviconUrl: '',
     },
-    seo: {
+    globalSeo: {
       title: 'Nova Digital Agency — Presencia Digital Premium',
       description: 'Agencia digital de alto nivel para marcas que quieren destacar.',
       ogImage: 'https://placehold.co/1200x630/7c3aed/ffffff?text=Nova+Digital',
       keywords: ['agencia', 'digital', 'premium', 'marketing'],
     },
-    blocks: [
+    pages: [
+      {
+        id: 'page-home',
+        path: '/',
+        name: 'Inicio',
+        blocks: [
       {
         id: 'block-hero-2',
         type: 'hero',
@@ -411,7 +411,29 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
             { platform: 'Twitter', url: 'https://twitter.com', icon: '🐦' },
           ],
         },
+      }
+        ]
       },
+      {
+        id: 'page-contacto',
+        path: '/contacto',
+        name: 'Contacto',
+        blocks: [
+          {
+            id: 'block-contact-1',
+            type: 'contact',
+            order: 5,
+            visible: true,
+            data: {
+              sectionTitle: 'Hablemos de tu proyecto',
+              email: 'hello@novadigital.agency',
+              phone: '+34 612 345 678',
+              address: 'Call of duty 42, Madrid, España',
+              showMap: false,
+            }
+          }
+        ]
+      }
     ],
   },
 };

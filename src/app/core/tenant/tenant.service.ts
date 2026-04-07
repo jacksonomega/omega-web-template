@@ -49,21 +49,15 @@ export class TenantService {
   // ─── State ───────────────────────────────────────────────────────────────────
 
   readonly config = signal<TenantConfig | null>(null);
+  readonly tenantConfig = this.config;
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
   // ─── Derived Signals (computed) ───────────────────────────────────────────────
 
   readonly theme = computed(() => this.config()?.theme ?? null);
-  readonly seo = computed(() => this.config()?.seo ?? null);
+  readonly seo = computed(() => this.config()?.globalSeo ?? null);
   readonly businessName = computed(() => this.config()?.businessName ?? '');
-
-  /** Returns only visible blocks, sorted by the `order` field */
-  readonly blocks = computed(() =>
-    (this.config()?.blocks ?? [])
-      .filter((b) => b.visible)
-      .sort((a, b) => a.order - b.order)
-  );
 
   // ─── Slug Resolution (SSR-compatible) ────────────────────────────────────────
 

@@ -6,9 +6,11 @@ import {
   effect,
 } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
+import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 import { TenantService } from '../../core/tenant/tenant.service';
 import { BlockType, PageBlock } from '../../core/tenant/tenant.model';
 import { BLOCK_REGISTRY } from './block-registry';
+import { filter } from 'rxjs/operators';
 
 interface ResolvedBlock {
   block: PageBlock;
@@ -32,8 +34,15 @@ interface ResolvedBlock {
         <p>{{ tenantService.error() }}</p>
       </div>
     }
+    
+    @if (pageNotFound()) {
+        <div class="error-screen" role="alert">
+            <h1>404</h1>
+            <p>La página que buscas no existe.</p>
+        </div>
+    }
 
-    @if (!tenantService.isLoading() && !tenantService.error()) {
+    @if (!tenantService.isLoading() && !tenantService.error() && !pageNotFound()) {
       <main class="page-layout">
         @for (item of resolvedBlocks(); track item.block.id) {
           <section
@@ -100,19 +109,44 @@ interface ResolvedBlock {
 })
 export class PageRendererComponent {
   protected readonly tenantService = inject(TenantService);
+  private router = inject(Router);
 
   /** Resolved blocks: each PageBlock paired with its lazy-loaded component Type */
   readonly resolvedBlocks = signal<ResolvedBlock[]>([]);
+  readonly pageNotFound = signal<boolean>(false);
 
   constructor() {
-    // El 'effect' vigila a tenantService.blocks()
-    // Cada vez que el editor mande un bloque nuevo, se volverá a ejecutar,
-    // cargará los componentes perezosos si hacen falta, y actualizará la vista.
+    this.router.events.pipe(
+        filter((e: NavigationEvent): e is NavigationEnd => e instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+        this.loadCurrentPage(event.urlAfterRedirects);
+    });
+      
     effect(async () => {
-      const blocks = this.tenantService.blocks();
-      const resolved = await this.resolveBlocks(blocks);
-      this.resolvedBlocks.set(resolved);
+      // Re-trigger re-render if entire config gets re-fetched via the service
+      const config = this.tenantService.tenantConfig();
+      if(config) {
+          this.loadCurrentPage(this.router.url);
+      }
     }, { allowSignalWrites: true });
+  }
+  
+  private async loadCurrentPage(url: string) {
+      const config = this.tenantService.tenantConfig();
+      if (!config) return;
+      
+      const normalizedPath = url.split('?')[0]; // simple split for query params if any
+      const page = config.pages.find(p => p.path === normalizedPath);
+      
+      if (!page) {
+          this.pageNotFound.set(true);
+          this.resolvedBlocks.set([]);
+          return;
+      }
+      
+      this.pageNotFound.set(false);
+      const resolved = await this.resolveBlocks(page.blocks);
+      this.resolvedBlocks.set(resolved);
   }
 
   /**

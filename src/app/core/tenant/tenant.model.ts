@@ -237,6 +237,16 @@ export interface TenantSeo {
   keywords: string[];
 }
 
+// ─── Site Pages ───────────────────────────────────────────────────────────────
+
+export interface TenantPage {
+  id: string;
+  path: string;       // e.g., '/' or '/about'
+  name: string;       // Display name for navigation menus
+  seo?: TenantSeo;    // Page-specific SEO overrides
+  blocks: PageBlock[];
+}
+
 // ─── Root Tenant Config (JSON Schema from API) ────────────────────────────────
 
 export interface TenantConfig {
@@ -244,6 +254,6 @@ export interface TenantConfig {
   slug: string;
   businessName: string;
   theme: TenantTheme;
-  seo: TenantSeo;
-  blocks: PageBlock[];
+  globalSeo: TenantSeo;
+  pages: TenantPage[];
 }
