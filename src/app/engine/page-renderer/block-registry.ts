@@ -63,4 +63,20 @@ export const BLOCK_REGISTRY: Record<BlockType, () => Promise<Type<unknown>>> = {
     import('../../blocks/timeline/timeline-block.component').then(
       (m) => m.TimelineBlockComponent
     ),
+  'business-info': () =>
+    import('../../blocks/business-info/business-info-block.component').then(
+      (m) => m.BusinessInfoBlockComponent
+    ),
+  'restaurant-menu': () =>
+    import('../../blocks/restaurant-menu/restaurant-menu-block.component').then(
+      (m) => m.RestaurantMenuBlockComponent
+    ),
+  'product-showcase': () =>
+    import('../../blocks/product-showcase/product-showcase-block.component').then(
+      (m) => m.ProductShowcaseBlockComponent
+    ),
+  'booking-cta': () =>
+    import('../../blocks/booking-cta/booking-cta-block.component').then(
+      (m) => m.BookingCtaBlockComponent
+    ),
 };

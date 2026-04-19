@@ -276,6 +276,84 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
             }
           ]
         }
+      },
+      {
+        id: 'block-business-info-example',
+        type: 'business-info',
+        order: 4.2,
+        visible: true,
+        data: {
+          sectionTitle: 'Visita nuestro local',
+          openingHours: [
+            { day: 'Lunes - Viernes', hours: '09:00 - 20:00' },
+            { day: 'Sábados', hours: '10:00 - 14:00' },
+            { day: 'Domingos', hours: 'Cerrado' }
+          ],
+          isOpenNow: true,
+          phone: '+34 900 123 456',
+          whatsapp: '+34 600 123 456',
+          email: 'hola@local.com',
+          address: 'Calle Falsa 123, Madrid',
+          mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12148.847525287796!2d-3.7142!3d40.4168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422997800a3c81%3A0xc436dec1618c2269!2sMadrid!5e0!3m2!1ses!2ses!4v1650000000000!5m2!1ses!2ses'
+        }
+      },
+      {
+        id: 'block-restaurant-menu-example',
+        type: 'restaurant-menu',
+        order: 4.3,
+        visible: true,
+        data: {
+          sectionTitle: 'Menú Degustación',
+          subtitle: 'Nuestros platos estrella',
+          categories: [
+            {
+              id: 'cat-entrantes',
+              name: 'Para Compartir',
+              items: [
+                { id: 'item1', title: 'Bravas Caseras', price: '6.50€', description: 'Patatas crujientes con nuestra salsa brava especial.', allergens: ['spicy', 'vegan'], isPopular: true },
+                { id: 'item2', title: 'Croquetas de Jamón', price: '8.00€', description: 'Ración de 6 croquetas ibéricas cremosas.', allergens: ['gluten', 'lactose'] }
+              ]
+            },
+            {
+              id: 'cat-principales',
+              name: 'Principales',
+              items: [
+                { id: 'item3', title: 'Hamburguesa Trufada', price: '14.90€', description: 'Doble carne, queso cheddar, mayo de trufa y rúcula.', allergens: ['gluten', 'lactose'], isPopular: true },
+                { id: 'item4', title: 'Poke Vegano', price: '12.50€', description: 'Arroz sushi, heura, edamame, mango y salsa teriyaki.', allergens: ['vegan'] }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        id: 'block-product-showcase-example',
+        type: 'product-showcase',
+        order: 4.4,
+        visible: true,
+        data: {
+          sectionTitle: 'Boutique Exclusiva',
+          subtitle: 'Nuevos productos de temporada',
+          layout: 'carousel',
+          products: [
+            { id: 'prod1', title: 'Camiseta de Algodón Orgánico', price: '29.99€', originalPrice: '39.99€', imageUrl: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800', badge: 'Rebajado', actionUrl: '#' },
+            { id: 'prod2', title: 'Vaso Termo Sostenible', price: '19.50€', imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&q=80&w=800', badge: 'Nuevo', actionUrl: '#' },
+            { id: 'prod3', title: 'Auriculares Minimalistas', price: '89.00€', imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800', badge: 'Top Ventas', actionUrl: '#' }
+          ]
+        }
+      },
+      {
+        id: 'block-booking-cta-example',
+        type: 'booking-cta',
+        order: 4.5,
+        visible: true,
+        data: {
+          title: 'Reserva tu mesa online',
+          subtitle: 'Disfruta de la mejor gastronomía sin esperas. Reserva directamente desde nuestra web.',
+          widgetType: 'button-only',
+          buttonLabel: 'Quiero Reservar',
+          buttonUrl: '#',
+          imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1200'
+        }
       }
         ]
       },

@@ -14,7 +14,11 @@ export type BlockType =
   | 'location'
   | 'faq'
   | 'text'
-  | 'timeline';
+  | 'timeline'
+  | 'business-info'
+  | 'restaurant-menu'
+  | 'product-showcase'
+  | 'booking-cta';
 
 // ─── Block Data Interfaces ────────────────────────────────────────────────────
 
@@ -183,6 +187,67 @@ export interface TimelineBlockData {
   events: TimelineEvent[];
 }
 
+// ─── Vertical Business Blocks ────────────────────────────────────────────────
+
+export interface BusinessInfoBlockData {
+  sectionTitle?: string;
+  openingHours: { day: string; hours: string }[];
+  isOpenNow?: boolean;
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+  address?: string;
+  mapEmbedUrl?: string;
+}
+
+export interface MenuItem {
+  id: string;
+  title: string;
+  price: string;
+  description?: string;
+  allergens?: ('gluten' | 'lactose' | 'nuts' | 'vegan' | 'spicy')[];
+  isPopular?: boolean;
+}
+
+export interface MenuCategory {
+  id: string;
+  name: string;
+  items: MenuItem[];
+}
+
+export interface RestaurantMenuBlockData {
+  sectionTitle?: string;
+  subtitle?: string;
+  categories: MenuCategory[];
+}
+
+export interface ProductShowcaseItem {
+  id: string;
+  title: string;
+  price: string;
+  originalPrice?: string;
+  imageUrl: string;
+  badge?: string;
+  actionUrl?: string;
+}
+
+export interface ProductShowcaseBlockData {
+  sectionTitle?: string;
+  subtitle?: string;
+  layout: 'carousel' | 'grid';
+  products: ProductShowcaseItem[];
+}
+
+export interface BookingCtaBlockData {
+  title: string;
+  subtitle?: string;
+  widgetType: 'calendly' | 'thefork' | 'custom' | 'button-only';
+  widgetUrl?: string;
+  buttonLabel?: string;
+  buttonUrl?: string;
+  imageUrl?: string;
+}
+
 // ─── Discriminated Union ──────────────────────────────────────────────────────
 
 export type BlockData =
@@ -199,7 +264,11 @@ export type BlockData =
   | LocationBlockData
   | FaqBlockData
   | TextBlockData
-  | TimelineBlockData;
+  | TimelineBlockData
+  | BusinessInfoBlockData
+  | RestaurantMenuBlockData
+  | ProductShowcaseBlockData
+  | BookingCtaBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
 
