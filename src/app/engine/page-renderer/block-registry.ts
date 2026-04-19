@@ -79,4 +79,8 @@ export const BLOCK_REGISTRY: Record<BlockType, () => Promise<Type<unknown>>> = {
     import('../../blocks/booking-cta/booking-cta-block.component').then(
       (m) => m.BookingCtaBlockComponent
     ),
+  'ai-chat': () =>
+    import('../../blocks/ai-chat/ai-chat-block.component').then(
+      (m) => m.AiChatBlockComponent
+    ),
 };

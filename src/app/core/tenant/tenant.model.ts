@@ -18,7 +18,8 @@ export type BlockType =
   | 'business-info'
   | 'restaurant-menu'
   | 'product-showcase'
-  | 'booking-cta';
+  | 'booking-cta'
+  | 'ai-chat';
 
 // ─── Block Data Interfaces ────────────────────────────────────────────────────
 
@@ -106,6 +107,16 @@ export interface FooterBlockData {
   copyrightText: string;
   links: { label: string; url: string }[];
   socialLinks: SocialLink[];
+}
+
+export interface AiChatBlockData {
+  floatingPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  buttonIcon?: string;
+  buttonColor?: string;
+  chatTitle?: string;
+  welcomeMessage?: string;
+  endpointUrl: string;
+  placeholderText?: string;
 }
 
 export interface ActionProp {
@@ -268,7 +279,8 @@ export type BlockData =
   | BusinessInfoBlockData
   | RestaurantMenuBlockData
   | ProductShowcaseBlockData
-  | BookingCtaBlockData;
+  | BookingCtaBlockData
+  | AiChatBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
 

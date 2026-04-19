@@ -354,6 +354,21 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
           buttonUrl: '#',
           imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1200'
         }
+      },
+      {
+        id: 'block-ai-chat-example',
+        type: 'ai-chat',
+        order: 9.9,
+        visible: true,
+        data: {
+          floatingPosition: 'bottom-right',
+          buttonIcon: '🤖',
+          buttonColor: 'var(--primaryColor)',
+          chatTitle: 'Asistente Virtual',
+          welcomeMessage: '¡Hola! ¿En qué puedo ayudarte hoy?',
+          endpointUrl: 'https://mock-ai-endpoint.local/chat',
+          placeholderText: 'Escribe tu pregunta...'
+        }
       }
         ]
       },

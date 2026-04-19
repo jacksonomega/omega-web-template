@@ -113,3 +113,28 @@ Un bloque inmersivo para la conversión. En lugar de un mero enlace, simula o in
 **Comportamiento:**
 - `widgetType="button-only"`: Renderizará un simple botón elegante con fondo difuminado basado en la imagen provista.
 - Si se escoge `calendly`, el contenedor del Iframe será más largo verticalmente para acoger el seleccionador de días nativo de Calendly.
+
+---
+
+## 5. Asistente con Inteligencia Artificial Flotante (`ai-chat`)
+Introduce un botón de atención al cliente flotante en el sitio que, al hacer clic, despliega un panel de chat de IA.
+
+### Interfaz JSON para el Payload
+```json
+{
+  "type": "ai-chat",
+  "data": {
+    "floatingPosition": "bottom-right",
+    "buttonIcon": "🤖",
+    "buttonColor": "#007bff",
+    "chatTitle": "Soporte IA",
+    "welcomeMessage": "¡Hola! ¿En qué puedo ayudarte?",
+    "endpointUrl": "https://api.tu-saas.com/v1/chat",
+    "placeholderText": "Escribe tu duda..."
+  }
+}
+```
+**Comportamiento:**
+- `floatingPosition`: Controla la esquina donde aparecerá fijado (fixed) el botón flotante.
+- `endpointUrl`: La URL del backend que procesará el texto del usuario y devolverá una respuesta (`{"reply": "..."}`).
+- Incorpora animaciones de despliegue, estado de carga "is typing" e interfaz amigable tipo chat.

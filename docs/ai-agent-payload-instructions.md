@@ -163,6 +163,13 @@ El motor es como un LEGO. Un mismo bloque puede ser muchas cosas dependiendo de 
 #### `contact` (Conversión)
 - Campos: `email`, `phone`, `address`, `showMap` (boolean).
 
+#### `ai-chat` (Soporte Inteligente)
+- Botón flotante para atención al cliente guiada por IA.
+- `floatingPosition`: `"bottom-right"`, `"bottom-left"`, `"top-right"`, `"top-left"`.
+- `buttonIcon`, `buttonColor`, `chatTitle`, `welcomeMessage`.
+- `endpointUrl`: URL obligatoria del backend que procesa el chat.
+- `placeholderText`: Texto predictivo del input.
+
 ---
 
 ## 🚀 EJEMPLO: SITIO COMPLETO PARA BARBERÍA (Payload)
