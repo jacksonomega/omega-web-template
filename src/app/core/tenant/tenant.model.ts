@@ -19,7 +19,23 @@ export type BlockType =
   | 'restaurant-menu'
   | 'product-showcase'
   | 'booking-cta'
-  | 'ai-chat';
+  | 'ai-chat'
+  | 'ai-chat-page';
+
+export interface AiChatPageBlockData {
+  title?: string;
+  subtitle?: string;
+  endpointUrl: string;
+  welcomeMessage?: string;
+  placeholderText?: string;
+  assistantName?: string;
+  assistantAvatar?: string;
+  userAvatar?: string;
+  primaryColor?: string;
+  bgColor?: string;
+  surfaceColor?: string;
+  textColor?: string;
+}
 
 // ─── Block Data Interfaces ────────────────────────────────────────────────────
 
@@ -280,7 +296,8 @@ export type BlockData =
   | RestaurantMenuBlockData
   | ProductShowcaseBlockData
   | BookingCtaBlockData
-  | AiChatBlockData;
+  | AiChatBlockData
+  | AiChatPageBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
 

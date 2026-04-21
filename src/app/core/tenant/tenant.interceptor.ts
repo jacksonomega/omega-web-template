@@ -32,6 +32,28 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
     },
     pages: [
       {
+        id: 'page-ai-assistant',
+        path: '/asistente',
+        name: 'Asistente IA',
+        blocks: [
+          {
+            id: 'block-ai-chat-page-1',
+            type: 'ai-chat-page',
+            order: 1,
+            visible: true,
+            data: {
+              title: 'Nuevo Chat',
+              subtitle: 'Soporte y Consultas Inteligentes',
+              welcomeMessage: '¡Hola! Soy el asistente inteligente. ¿En qué te puedo ayudar hoy?',
+              assistantName: 'EcoBot',
+              assistantAvatar: 'https://ui-avatars.com/api/?name=Eco&background=16a34a&color=fff',
+              endpointUrl: 'https://mock-ai-endpoint.local/chat-full',
+              placeholderText: 'Escribe aquí tu consulta...'
+            }
+          }
+        ]
+      },
+      {
         id: 'page-home',
         path: '/',
         name: 'Inicio',

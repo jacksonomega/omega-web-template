@@ -170,6 +170,13 @@ El motor es como un LEGO. Un mismo bloque puede ser muchas cosas dependiendo de 
 - `endpointUrl`: URL obligatoria del backend que procesa el chat.
 - `placeholderText`: Texto predictivo del input.
 
+#### `ai-chat-page` (Asistente a Pantalla Completa Estilo ChatGPT)
+- Experiencia inmersiva donde el chat toma todo el ancho y alto del navegador.
+- Útil para crear rutas dedicadas como `/asistente`.
+- `title`, `subtitle`, `welcomeMessage`, `placeholderText`.
+- `endpointUrl`: URL del backend que devolverá `{"reply": "..."}`.
+- `assistantName`, `assistantAvatar`: Personalizan la identidad visual del bot dentro de la conversación.
+
 ---
 
 ## 🚀 EJEMPLO: SITIO COMPLETO PARA BARBERÍA (Payload)
