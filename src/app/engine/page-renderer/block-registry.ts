@@ -83,6 +83,10 @@ export const BLOCK_REGISTRY: Record<BlockType, () => Promise<Type<unknown>>> = {
     import('../../blocks/ai-chat/ai-chat-block.component').then(
       (m) => m.AiChatBlockComponent
     ),
+  'newsletter': () =>
+    import('../../blocks/newsletter/newsletter-block.component').then(
+      (m) => m.NewsletterBlockComponent
+    ),
   'ai-chat-page': () =>
     import('../../blocks/ai-chat-page/ai-chat-page-block.component').then(
       (m) => m.AiChatPageBlockComponent

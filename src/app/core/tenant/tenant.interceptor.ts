@@ -221,6 +221,21 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
         }
       },
       {
+        id: 'block-newsletter-1',
+        type: 'newsletter',
+        order: 3.8,
+        visible: true,
+        data: {
+          title: 'Únete a nuestra comunidad Eco',
+          subtitle: 'Déjanos tus datos y recibe un 15% de descuento en tu próximo proyecto de diseño sostenible.',
+          type: 'email',
+          placeholderText: 'Introduce tu correo...',
+          buttonText: 'Añadir mi correo',
+          layout: 'split',
+          imageUrl: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&q=80&w=600'
+        }
+      },
+      {
         id: 'block-testimonials-1',
         type: 'testimonials',
         order: 4,

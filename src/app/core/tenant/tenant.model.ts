@@ -20,7 +20,8 @@ export type BlockType =
   | 'product-showcase'
   | 'booking-cta'
   | 'ai-chat'
-  | 'ai-chat-page';
+  | 'ai-chat-page'
+  | 'newsletter';
 
 export interface AiChatPageBlockData {
   title?: string;
@@ -275,6 +276,16 @@ export interface BookingCtaBlockData {
   imageUrl?: string;
 }
 
+export interface NewsletterBlockData {
+  title: string;
+  subtitle?: string;
+  placeholderText?: string;
+  buttonText?: string;
+  imageUrl?: string;
+  layout?: 'split' | 'centered';
+  type?: 'email' | 'phone' | 'both';
+}
+
 // ─── Discriminated Union ──────────────────────────────────────────────────────
 
 export type BlockData =
@@ -297,6 +308,7 @@ export type BlockData =
   | ProductShowcaseBlockData
   | BookingCtaBlockData
   | AiChatBlockData
+  | NewsletterBlockData
   | AiChatPageBlockData;
 
 // ─── Page Block ───────────────────────────────────────────────────────────────
