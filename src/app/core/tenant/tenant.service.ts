@@ -78,7 +78,7 @@ export class TenantService {
 
   // ─── Config Loader ────────────────────────────────────────────────────────────
 
-  loadTenantConfig(): Observable<TenantConfig> {
+  loadTenantConfig(): Observable<TenantConfig | null> {
     const domain = this.getDomain();
     this.isLoading.set(true);
     this.error.set(null);
