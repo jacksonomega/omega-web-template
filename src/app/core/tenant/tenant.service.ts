@@ -83,7 +83,7 @@ export class TenantService {
     this.error.set(null);
 
     // API Call depending on the requested query param
-    return this.http.get<TenantConfig>(`https://api.omega-studio.tech/render/page?domain=${domain}`).pipe(
+    return this.http.get<TenantConfig>(`https://api.omega-studio.tech/render-page?domain=${domain}`).pipe(
       tap((config) => {
         if (!config) return;
         this.config.set(config);
