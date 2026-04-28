@@ -5,10 +5,9 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { tenantMockInterceptor } from './core/tenant/tenant.interceptor';
 import { tenantInitializer } from './core/tenant/tenant.initializer';
 
 export const appConfig: ApplicationConfig = {
@@ -17,10 +16,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
 
-    // HTTP client with mock interceptor (replace with real API interceptor in production)
+    // HTTP client
     provideHttpClient(
-      withFetch(),
-      withInterceptors([tenantMockInterceptor])
+      withFetch()
     ),
 
     // Block app bootstrap until tenant config is resolved

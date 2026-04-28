@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError, of } from 'rxjs';
 import { TenantConfig, TenantTheme } from './tenant.model';
 
 @Injectable({ providedIn: 'root' })
@@ -59,46 +59,45 @@ export class TenantService {
   readonly seo = computed(() => this.config()?.globalSeo ?? null);
   readonly businessName = computed(() => this.config()?.businessName ?? '');
 
-  // ─── Slug Resolution (SSR-compatible) ────────────────────────────────────────
+  // ─── Domain Resolution (SSR-compatible) ────────────────────────────────────────
 
   /**
-   * Resolves the tenant slug from the hostname.
+   * Gets the current domain from the hostname.
    * Uses the injected DOCUMENT token so it works both in browser and SSR.
-   * Examples:
-   *   cliente1.misaas.com  → 'cliente1'
-   *   localhost            → 'demo'  (fallback for local development)
+   * We fallback to mipagina.omega-studio.tech for local development to ensure data loads.
    */
-  resolveSlug(): string {
+  getDomain(): string {
     const hostname = this.document.location.hostname;
-
-    // Local dev — always return the demo tenant
+    // Local dev fallback
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'demo';
+      return 'mipagina.omega-studio.tech'; // Default fallback testing domain
     }
-
-    // Extract first subdomain segment: 'cliente1' from 'cliente1.misaas.com'
-    const parts = hostname.split('.');
-    return parts.length >= 3 ? parts[0] : 'demo';
+    return hostname;
   }
 
   // ─── Config Loader ────────────────────────────────────────────────────────────
 
   loadTenantConfig(): Observable<TenantConfig> {
-    const slug = this.resolveSlug();
+    const domain = this.getDomain();
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.get<TenantConfig>(`/api/tenant/${slug}`).pipe(
+    // API Call depending on the requested query param
+    return this.http.get<TenantConfig>(`https://api.omega-studio.tech/render/page?domain=${domain}`).pipe(
       tap((config) => {
+        if (!config) return;
         this.config.set(config);
-        this.applyTheme(config.theme);
-        this.applyFavicon(config.theme.faviconUrl);
+        if (config.theme) {
+          this.applyTheme(config.theme);
+          this.applyFavicon(config.theme.faviconUrl);
+        }
         this.isLoading.set(false);
       }),
       catchError((err) => {
-        this.error.set(`Failed to load tenant config for slug "${slug}"`);
+        this.error.set(`Failed to load tenant config for domain "${domain}"`);
         this.isLoading.set(false);
-        return throwError(() => err);
+        // Return a safe fallback so the application (and SSR/prerender build) doesn't crash on 404
+        return of(null as any);
       })
     );
   }
