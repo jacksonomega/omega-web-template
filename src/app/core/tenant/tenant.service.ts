@@ -86,6 +86,7 @@ export class TenantService {
     // API Call depending on the requested query param
     return this.http.get<any[]>(`https://api.omega-studio.tech/render-page?domain=${domain}`).pipe(
       map(responses => {
+        console.log('📦 [SaaS Engine] Respuesta de la API:', responses);
         if (responses && responses.length > 0 && responses[0].tenantConfig) {
           return responses[0].tenantConfig as TenantConfig;
         }
