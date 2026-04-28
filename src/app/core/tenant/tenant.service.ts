@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
+import { map } from 'rxjs/operators';
 import { catchError, Observable, tap, throwError, of } from 'rxjs';
 import { TenantConfig, TenantTheme } from './tenant.model';
 
@@ -83,8 +84,14 @@ export class TenantService {
     this.error.set(null);
 
     // API Call depending on the requested query param
-    return this.http.get<TenantConfig>(`https://api.omega-studio.tech/render-page?domain=${domain}`).pipe(
-      tap((config) => {
+    return this.http.get<any[]>(`https://api.omega-studio.tech/render-page?domain=${domain}`).pipe(
+      map(responses => {
+        if (responses && responses.length > 0 && responses[0].tenantConfig) {
+          return responses[0].tenantConfig as TenantConfig;
+        }
+        return null;
+      }),
+      tap((config: TenantConfig | null) => {
         if (!config) return;
         this.config.set(config);
         if (config.theme) {
