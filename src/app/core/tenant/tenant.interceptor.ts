@@ -566,6 +566,59 @@ const MOCK_TENANTS: Record<string, TenantConfig> = {
       }
     ],
   },
+
+  // ─── Piel Perfecta Tenant ───────────────────────────────────────────────────
+  'piel-perfecta': {
+    tenantId: '6e3c3241-02b0-4f77-a686-521c54ea4e0d',
+    slug: 'piel-perfecta',
+    businessName: 'Piel Perfecta Clínica',
+    theme: {
+      primaryColor: '#0d9488',
+      secondaryColor: '#0f766e',
+      accentColor: '#14b8a6', // Optional/guessed based on tailwind teal
+      bgColor: '#ffffff',
+      surfaceColor: '#f8fafc',
+      textColor: '#0f172a',
+      textMutedColor: '#475569',
+      fontFamily: "'Inter', sans-serif",
+      fontFamilyUrl: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap',
+      borderRadius: '8px',
+      logoUrl: 'https://placehold.co/160x48/0d9488/ffffff?text=Piel+Perfecta',
+      faviconUrl: '',
+    },
+    globalSeo: {
+      title: 'Piel Perfecta Clínica', // Placeholder based on business name
+      description: 'Limpiezas faciales profundas y v...',
+      ogImage: 'https://placehold.co/1200x630/0d9488/ffffff?text=Piel+Perfecta',
+      keywords: ['limpiezas', 'faciales', 'profundas'], // Mocked from image truncation
+    },
+    pages: [
+      {
+        id: 'page-home',
+        path: '/',
+        name: 'Inicio',
+        blocks: [
+          {
+            id: 'block-hero-1',
+            type: 'hero',
+            order: 1,
+            visible: true,
+            data: {
+              headline: 'Piel Perfecta Clínica',
+              subheadline: 'Limpiezas faciales profundas y tratamientos estéticos avanzados.',
+              layout: 'full-bg',
+              badge: 'Reserva Hoy',
+              actions: [
+                { type: 'whatsapp', url: 'https://wa.me/34600000000', label: 'Pedir Cita' }
+              ],
+              imageUrl: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1200',
+              backgroundType: 'image',
+            },
+          }
+        ]
+      }
+    ],
+  }
 };
 
 // ─── Interceptor Function ─────────────────────────────────────────────────────
