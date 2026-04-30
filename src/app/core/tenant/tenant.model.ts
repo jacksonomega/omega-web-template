@@ -361,6 +361,7 @@ export interface TenantPage {
 
 export interface TenantConfig {
   tenantId: string;
+  companyPublicId?: string;
   slug: string;
   businessName: string;
   theme: TenantTheme;

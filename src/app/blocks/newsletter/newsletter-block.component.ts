@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { NewsletterBlockData } from '../../core/tenant/tenant.model';
+import { TenantService } from '../../core/tenant/tenant.service';
 
 @Component({
   selector: 'app-newsletter-block',
@@ -15,26 +17,42 @@ import { NewsletterBlockData } from '../../core/tenant/tenant.model';
 
         <div class="form-wrapper">
           @if (inputType() === 'both' || inputType() === 'email') {
-            <input 
-              type="email" 
-              [placeholder]="data().placeholderText || 'Correo electrónico'" 
-              class="input-field" 
+            <input
+              #emailInput
+              type="email"
+              [placeholder]="data().placeholderText || 'Correo electrónico'"
+              class="input-field"
+              [value]="emailValue()"
+              (input)="onEmailInput(emailInput.value)"
+              autocomplete="email"
+              required
               [attr.aria-label]="data().placeholderText || 'Correo electrónico'"
             />
           }
           @if (inputType() === 'phone') {
-            <input 
-              type="tel" 
-              [placeholder]="data().placeholderText || 'Teléfono'" 
-              class="input-field" 
+            <input
+              type="tel"
+              [placeholder]="data().placeholderText || 'Teléfono'"
+              class="input-field"
               [attr.aria-label]="data().placeholderText || 'Teléfono'"
             />
           }
-          <button class="btn btn-primary" (click)="subscribe()">{{ data().buttonText || 'Suscribirse' }}</button>
+          <button
+            class="btn btn-primary"
+            type="button"
+            [disabled]="isSubmitting()"
+            [attr.aria-busy]="isSubmitting()"
+            (click)="subscribe()"
+          >
+            {{ isSubmitting() ? 'Enviando...' : (data().buttonText || 'Suscribirse') }}
+          </button>
         </div>
         
         @if (successMessage()) {
           <p class="success-message">{{ successMessage() }}</p>
+        }
+        @if (errorMessage()) {
+          <p class="error-message" role="alert">{{ errorMessage() }}</p>
         }
       </div>
 
@@ -123,10 +141,21 @@ import { NewsletterBlockData } from '../../core/tenant/tenant.model';
       opacity: 0.9;
     }
 
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     .success-message {
       margin-top: 1rem;
       color: green;
       font-weight: bold;
+    }
+
+    .error-message {
+      margin-top: 1rem;
+      color: #b42318;
+      font-weight: 600;
     }
 
     .image-wrapper {
@@ -149,16 +178,63 @@ import { NewsletterBlockData } from '../../core/tenant/tenant.model';
   `]
 })
 export class NewsletterBlockComponent {
+  private readonly http = inject(HttpClient);
+  private readonly tenantService = inject(TenantService);
+
   data = input.required<NewsletterBlockData>();
 
+  emailValue = signal('');
+  isSubmitting = signal(false);
   successMessage = signal('');
+  errorMessage = signal('');
 
   layoutClass = computed(() => this.data().layout || 'centered');
   inputType = computed(() => this.data().type || 'email');
 
-  subscribe() {
-    // Mock subscription
-    this.successMessage.set('¡Suscripción exitosa!');
-    setTimeout(() => this.successMessage.set(''), 3000);
+  onEmailInput(value: string): void {
+    this.emailValue.set(value.trim());
+    if (this.errorMessage()) {
+      this.errorMessage.set('');
+    }
+  }
+
+  subscribe(): void {
+    const email = this.emailValue().trim();
+    const publicCompanyId = this.tenantService.getCompanyPublicId()?.trim();
+
+    this.successMessage.set('');
+    this.errorMessage.set('');
+
+    if (!email || !this.isValidEmail(email)) {
+      this.errorMessage.set('Introduce un correo electronico valido.');
+      return;
+    }
+
+    if (!publicCompanyId) {
+      this.errorMessage.set('No se pudo obtener el identificador publico de la compania.');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+
+    this.http.post('https://api.omega-studio.tech/sites/loyalty/signup', {
+      email,
+      publicCompanyId,
+    }).subscribe({
+      next: () => {
+        this.successMessage.set('¡Suscripción exitosa!');
+        this.emailValue.set('');
+        this.isSubmitting.set(false);
+        setTimeout(() => this.successMessage.set(''), 3000);
+      },
+      error: () => {
+        this.errorMessage.set('No se pudo completar la suscripcion. Intentalo de nuevo.');
+        this.isSubmitting.set(false);
+      },
+    });
+  }
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 }

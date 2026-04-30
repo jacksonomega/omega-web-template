@@ -59,6 +59,11 @@ export class TenantService {
   readonly theme = computed(() => this.config()?.theme ?? null);
   readonly seo = computed(() => this.config()?.globalSeo ?? null);
   readonly businessName = computed(() => this.config()?.businessName ?? '');
+  readonly companyPublicId = computed(() => this.config()?.companyPublicId ?? null);
+
+  getCompanyPublicId(): string | null {
+    return this.companyPublicId();
+  }
 
   // ─── Domain Resolution (SSR-compatible) ────────────────────────────────────────
 
@@ -88,7 +93,13 @@ export class TenantService {
       map(response => {
         console.log('📦 [SaaS Engine] Respuesta de la API:', response);
         if (response && response.site && response.site.tenantConfig) {
-          return response.site.tenantConfig as TenantConfig;
+          const tenantConfig = response.site.tenantConfig as TenantConfig;
+          const companyPublicId = response.site.companyPublicId ?? response.site.publicCompanyId;
+
+          return {
+            ...tenantConfig,
+            companyPublicId: tenantConfig.companyPublicId ?? companyPublicId,
+          } as TenantConfig;
         }
         return null;
       }),
