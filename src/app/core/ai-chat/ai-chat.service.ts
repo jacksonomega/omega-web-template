@@ -9,7 +9,7 @@ import { TenantService } from '../tenant/tenant.service';
 export class AiChatService {
   private http = inject(HttpClient);
   private tenantService = inject(TenantService);
-  private webhookUrl = 'https://n8n.omega-studio.tech/webhook-test/atencion-al-cliente';
+  private webhookUrl = 'https://n8n.omega-studio.tech/webhook/atencion-al-cliente';
 
   sendMessage(message: string, configuredEndpoint?: string): Observable<string> {
     // Override whatever the block has configured with the required webhook
