@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BlockBase } from '../../shared/block-base.interface';
 import { AiChatPageBlockData } from '../../core/tenant/tenant.model';
+import { AiChatService } from '../../core/ai-chat/ai-chat.service';
 
 interface ChatMessage {
   text: string;
@@ -303,7 +303,7 @@ export class AiChatPageBlockComponent implements OnInit, BlockBase<AiChatPageBlo
   isLoading = signal(false);
   newMessage = '';
 
-  private http = inject(HttpClient);
+  private chatService = inject(AiChatService);
 
   ngOnInit() {
     this.resetChat();
@@ -327,22 +327,10 @@ export class AiChatPageBlockComponent implements OnInit, BlockBase<AiChatPageBlo
     this.isLoading.set(true);
 
     const endpoint = this.data.endpointUrl;
-    if (!endpoint) {
-      this.isLoading.set(false);
-      this.messages.update(m => [...m, { text: 'Endpoint no configurado.', sender: 'bot' }]);
-      return;
-    }
 
-    this.http.post<{reply?: string; message?: string}>(endpoint, { message: text }).subscribe({
-      next: (response) => {
-        const botReply = response.reply || response.message || 'Respuesta de IA simulada.';
-        this.messages.update(m => [...m, { text: botReply, sender: 'bot' }]);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.messages.update(m => [...m, { text: 'Disculpa, tuve un error de conexión.', sender: 'bot' }]);
-        this.isLoading.set(false);
-      }
+    this.chatService.sendMessage(text, endpoint).subscribe(botReply => {
+      this.messages.update(m => [...m, { text: botReply, sender: 'bot' }]);
+      this.isLoading.set(false);
     });
   }
 }

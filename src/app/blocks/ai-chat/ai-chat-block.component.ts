@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BlockBase } from '../../shared/block-base.interface';
 import { AiChatBlockData } from '../../core/tenant/tenant.model';
+import { AiChatService } from '../../core/ai-chat/ai-chat.service';
 
 interface ChatMessage {
   text: string;
@@ -251,7 +251,7 @@ export class AiChatBlockComponent implements OnInit, BlockBase<AiChatBlockData> 
   isLoading = signal(false);
   newMessage = '';
 
-  private http = inject(HttpClient);
+  private chatService = inject(AiChatService);
 
   ngOnInit() {
     // Add effect or init to set welcome message if any
@@ -283,25 +283,11 @@ export class AiChatBlockComponent implements OnInit, BlockBase<AiChatBlockData> 
     this.isLoading.set(true);
 
     const endpoint = this.data.endpointUrl;
-    if (!endpoint) {
-      console.error('No configuration endpointUrl provided for AI Chat block');
-      this.isLoading.set(false);
-      this.messages.update(m => [...m, { text: 'Endpoint no configurado.', sender: 'bot' }]);
-      return;
-    }
 
     // Call the external API
-    this.http.post<{reply?: string; message?: string}>(endpoint, { message: text }).subscribe({
-      next: (response) => {
-        const botReply = response.reply || response.message || 'He recibido tu mensaje (Respuesta generica simulada).';
-        this.messages.update(m => [...m, { text: botReply, sender: 'bot' }]);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        // Fallback for demo purposes if endpoint fails or isn't a real URL
-        this.messages.update(m => [...m, { text: 'Disculpa, tuve un error de conexión.', sender: 'bot' }]);
-        this.isLoading.set(false);
-      }
+    this.chatService.sendMessage(text, endpoint).subscribe(botReply => {
+      this.messages.update(m => [...m, { text: botReply, sender: 'bot' }]);
+      this.isLoading.set(false);
     });
   }
 }
