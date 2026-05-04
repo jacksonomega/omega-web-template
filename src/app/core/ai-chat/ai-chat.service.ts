@@ -10,7 +10,8 @@ export class AiChatService {
   private webhookUrl = 'https://n8n.omega-studio.tech/webhook/atencion-al-cliente';
 
   sendMessage(message: string, configuredEndpoint?: string): Observable<string> {
-    const endpoint = configuredEndpoint || this.webhookUrl;
+    // Override whatever the block has configured with the required webhook
+    const endpoint = this.webhookUrl;
 
     return this.http.post<any>(endpoint, { message }).pipe(
       map(response => {
