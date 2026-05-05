@@ -10,6 +10,7 @@ export class AiChatService {
   private http = inject(HttpClient);
   private tenantService = inject(TenantService);
   private webhookUrl = 'https://n8n.omega-studio.tech/webhook/atencion-al-cliente';
+  private sessionId = crypto.randomUUID();
 
   sendMessage(message: string, configuredEndpoint?: string): Observable<string> {
     // Override whatever the block has configured with the required webhook
@@ -21,7 +22,7 @@ export class AiChatService {
       params = params.set('publicId', publicId);
     }
 
-    return this.http.post<any>(endpoint, { message }, { params }).pipe(
+    return this.http.post<any>(endpoint, { message, sessionId: this.sessionId }, { params }).pipe(
       map(response => {
         return response.reply || response.message || response.output || 'Respuesta recibida correctamente.';
       }),
