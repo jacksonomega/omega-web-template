@@ -40,7 +40,6 @@ export class AiChatService {
             throw new Error(`HTTP Error: ${response.status}`);
           }
 
-          const isSSE = response.headers.get('content-type')?.includes('text/event-stream');
           const reader = response.body.getReader();
           const decoder = new TextDecoder('utf-8');
           let buffer = '';
@@ -49,59 +48,59 @@ export class AiChatService {
             const { done, value } = await reader.read();
             if (done) break;
 
-            const chunkStr = decoder.decode(value, { stream: true });
+            buffer += decoder.decode(value, { stream: true });
             
-            if (isSSE) {
-              buffer += chunkStr;
-              const events = buffer.split('\n\n');
-              buffer = events.pop() || '';
+            // Split by newline. Both standard SSE and NDJSON use newlines.
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+            
+            for (let line of lines) {
+              line = line.trim();
+              if (!line) continue;
               
-              for (const ev of events) {
-                const lines = ev.split('\n');
-                for (const line of lines) {
-                  if (line.startsWith('data:')) {
-                    const dataStr = line.substring(5).trim();
-                    if (dataStr === '[DONE]') continue;
-                    try {
-                      const parsed = JSON.parse(dataStr);
-                      if (parsed.type === 'item' && typeof parsed.content === 'string') {
-                        accumulatedText += parsed.content;
-                      } else if (parsed.token !== undefined) {
-                        accumulatedText += parsed.token;
-                      } else if (parsed.text !== undefined) {
-                        accumulatedText += parsed.text;
-                      } else if (parsed.response !== undefined) {
-                        accumulatedText += parsed.response;
-                      } else if (parsed.output !== undefined) {
-                        accumulatedText += parsed.output;
-                      } else if (parsed.message !== undefined) {
-                        accumulatedText += parsed.message;
-                      } else if (parsed.reply !== undefined) {
-                        accumulatedText += parsed.reply;
-                      }
-                      // Events like {"type": "begin"} or {"type": "end"} are ignored entirely
-                    } catch {
-                      accumulatedText += dataStr;
-                    }
-                  }
+              if (line.startsWith('data:')) {
+                line = line.substring(5).trim();
+              }
+              if (line === '[DONE]') continue;
+              
+              try {
+                const parsed = JSON.parse(line);
+                if (parsed.type === 'item' && typeof parsed.content === 'string') {
+                  accumulatedText += parsed.content;
+                } else if (parsed.token !== undefined) {
+                  accumulatedText += parsed.token;
+                } else if (parsed.text !== undefined) {
+                  accumulatedText += parsed.text;
+                } else if (parsed.response !== undefined) {
+                  accumulatedText += parsed.response;
+                } else if (parsed.output !== undefined) {
+                  accumulatedText += parsed.output;
+                } else if (parsed.message !== undefined) {
+                  accumulatedText += parsed.message;
+                } else if (parsed.reply !== undefined) {
+                  accumulatedText += parsed.reply;
+                }
+                // Known NDJSON event types like "begin" and "end" are ignored
+              } catch {
+                // If it fails to parse, and it doesn't look like JSON, it might just be raw text
+                if (!line.startsWith('{"') && !line.startsWith('[{')) {
+                  accumulatedText += line;
                 }
               }
-              observer.next(accumulatedText);
-            } else {
-              // Raw streams
-              accumulatedText += chunkStr;
-              observer.next(accumulatedText);
             }
+            observer.next(accumulatedText);
           }
 
-          // If not SSE, and it replied with a single JSON block
-          if (!isSSE && accumulatedText) {
+          // If the final buffer has remaining valid JSON, parse it too
+          if (buffer.trim()) {
             try {
-              const parsed = JSON.parse(accumulatedText);
+              const parsed = JSON.parse(buffer.trim());
               const finalMsg = parsed.reply || parsed.message || parsed.output || parsed.text || parsed.response;
-              if (finalMsg) accumulatedText = finalMsg;
+              if (finalMsg) accumulatedText += finalMsg;
             } catch {
-              // Was not JSON, just plain text
+              if (!buffer.trim().startsWith('{"')) {
+                accumulatedText += buffer.trim();
+              }
             }
           }
 
