@@ -64,8 +64,22 @@ export class AiChatService {
                     if (dataStr === '[DONE]') continue;
                     try {
                       const parsed = JSON.parse(dataStr);
-                      const token = parsed.token ?? parsed.text ?? parsed.response ?? parsed.output ?? parsed.message ?? parsed.reply ?? dataStr;
-                      accumulatedText += token;
+                      if (parsed.type === 'item' && typeof parsed.content === 'string') {
+                        accumulatedText += parsed.content;
+                      } else if (parsed.token !== undefined) {
+                        accumulatedText += parsed.token;
+                      } else if (parsed.text !== undefined) {
+                        accumulatedText += parsed.text;
+                      } else if (parsed.response !== undefined) {
+                        accumulatedText += parsed.response;
+                      } else if (parsed.output !== undefined) {
+                        accumulatedText += parsed.output;
+                      } else if (parsed.message !== undefined) {
+                        accumulatedText += parsed.message;
+                      } else if (parsed.reply !== undefined) {
+                        accumulatedText += parsed.reply;
+                      }
+                      // Events like {"type": "begin"} or {"type": "end"} are ignored entirely
                     } catch {
                       accumulatedText += dataStr;
                     }
