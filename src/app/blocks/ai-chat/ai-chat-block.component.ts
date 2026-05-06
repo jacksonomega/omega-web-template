@@ -284,10 +284,22 @@ export class AiChatBlockComponent implements OnInit, BlockBase<AiChatBlockData> 
 
     const endpoint = this.data.endpointUrl;
 
+    // Add an empty bot message that we will edit
+    this.messages.update(m => [...m, { text: '', sender: 'bot' }]);
+
     // Call the external API
-    this.chatService.sendMessage(text, endpoint).subscribe(botReply => {
-      this.messages.update(m => [...m, { text: botReply, sender: 'bot' }]);
-      this.isLoading.set(false);
+    this.chatService.sendMessage(text, endpoint).subscribe({
+      next: (botReply) => {
+        this.isLoading.set(false);
+        this.messages.update(m => {
+          const newM = [...m];
+          // Update the last message (which is from the bot)
+          newM[newM.length - 1].text = botReply;
+          return newM;
+        });
+      },
+      error: () => this.isLoading.set(false),
+      complete: () => this.isLoading.set(false)
     });
   }
 }
